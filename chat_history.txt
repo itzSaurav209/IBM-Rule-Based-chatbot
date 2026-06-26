@@ -1,0 +1,32 @@
+[01:24 PM] Student: hiii
+[01:24 PM] StudyMate: Type HELP to see available commands.
+[01:24 PM] Student: help
+[01:24 PM] StudyMate: 
+========== AVAILABLE COMMANDS ==========
+
+hello
+hi
+bye
+date
+time
+day
+study tip
+motivation
+python
+java
+sql
+calc 20+30
+25+30*4
+cgpa 85
+percentage 8.6
+about
+help
+
+[01:24 PM] Student: hello
+[01:24 PM] StudyMate: Hello! 👋
+[01:24 PM] Student: hii
+[01:24 PM] StudyMate: Type HELP to see available commands.
+[01:24 PM] Student: date
+[01:24 PM] StudyMate: Today's Date : 26 June 2026
+[01:24 PM] Student: motivation
+[01:24 PM] StudyMate: Every expert was once a beginner.
