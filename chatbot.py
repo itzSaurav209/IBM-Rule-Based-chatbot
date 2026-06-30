@@ -1,10 +1,7 @@
+# chatbot.py
 # ============================================================
 # Project Name : StudyMate - Rule Based Student Assistant
 # File Name    : chatbot.py
-#
-# Description:
-# Main chatbot logic.
-# Receives user message and returns chatbot response.
 # ============================================================
 
 import re
@@ -18,7 +15,13 @@ from responses import (
     python_fact,
     java_tip,
     sql_tip,
-    unknown
+    random_fact,
+    compliment,
+    mood_response,
+    small_talk,
+    bad_language,
+    help_text,
+    unknown,
 )
 
 from utils import (
@@ -28,418 +31,164 @@ from utils import (
     calculate,
     percentage_to_cgpa,
     cgpa_to_percentage,
-    save_chat
+    save_chat,
+    get_chat_statistics,
 )
-
 
 class StudyMateBot:
 
     def __init__(self):
-        pass
+        self.memory = {}
 
-
-    # --------------------------------------------------------
-    # Process User Message
-    # --------------------------------------------------------
+    def reply(self, text):
+        save_chat("StudyMate", text)
+        return text
 
     def get_response(self, message):
 
-        user_message = message.strip().lower()
+        user = message.strip()
+        text = user.lower()
 
-        # Save User Chat
-        save_chat("Student", message)
+        save_chat("Student", user)
 
-        # ===============================
-        # Greeting
-        # ===============================
+        # Greetings
+        if text in ["hi","hello","hey","good morning","good evening","good afternoon"]:
+            return self.reply(greeting())
 
-        if user_message in [
-            "hi",
-            "hello",
-            "hey",
-            "good morning",
-            "good afternoon",
-            "good evening"
-        ]:
+        # Thanks
+        if text in ["thanks","thank you","thankyou"]:
+            return self.reply(thanks())
 
-            bot = greeting()
+        # Goodbye
+        if text in ["bye","exit","quit","close"]:
+            return self.reply(goodbye())
 
-            save_chat("StudyMate", bot)
+        # Date Time
+        if "time" in text:
+            return self.reply(f"Current Time : {get_current_time()}")
 
-            return bot
+        if "date" in text:
+            return self.reply(f"Today's Date : {get_current_date()}")
 
+        if "day" in text:
+            return self.reply(f"Today is {get_current_day()}")
 
-        # ===============================
-        # Thank You
-        # ===============================
+        # Study
+        if text in ["study","study tip","study tips","tips"]:
+            return self.reply(study_tip())
 
-        elif user_message in [
-            "thanks",
-            "thank you",
-            "thankyou"
-        ]:
+        if text in ["motivation","motivate me","motivate","inspire me"]:
+            return self.reply(motivation())
 
-            bot = thanks()
+        if text in ["python","python fact","python facts"]:
+            return self.reply(python_fact())
 
-            save_chat("StudyMate", bot)
+        if text in ["java","java tips","java guide"]:
+            return self.reply(java_tip())
 
-            return bot
+        if text in ["sql","sql tips","database"]:
+            return self.reply(sql_tip())
 
+        if text in ["fact","random fact","tell me a fact"]:
+            return self.reply(random_fact())
 
-        # ===============================
-        # Bye
-        # ===============================
+        if text in ["compliment","compliment me","praise me"]:
+            return self.reply(compliment())
 
-        elif user_message in [
-            "bye",
-            "exit",
-            "quit",
-            "close"
-        ]:
+        # Mood
+        for mood in ["happy","sad","angry","stressed","tired","excited","confused"]:
+            if mood in text:
+                return self.reply(mood_response(mood))
 
-            bot = goodbye()
+        # Small Talk
+        for topic in ["weather","music","movies","movie","cricket","football","ai"]:
+            if topic in text:
+                return self.reply(small_talk(topic))
 
-            save_chat("StudyMate", bot)
+        # Memory
+        m = re.search(r"my name is (.+)", text)
+        if m:
+            self.memory["name"] = m.group(1).title()
+            return self.reply(f"Nice to meet you, {self.memory['name']}! I'll remember your name.")
 
-            return bot
+        if "what is my name" in text:
+            if "name" in self.memory:
+                return self.reply(f"Your name is {self.memory['name']}.")
+            return self.reply("I don't know your name yet. Tell me by saying 'My name is ...'")
 
+        m = re.search(r"i am (\d{1,2}) years old", text)
+        if m:
+            self.memory["age"] = m.group(1)
+            return self.reply("Okay! I'll remember your age.")
 
-        # ===============================
-        # Time
-        # ===============================
+        if "how old am i" in text:
+            if "age" in self.memory:
+                return self.reply(f"You are {self.memory['age']} years old.")
+            return self.reply("You haven't told me your age yet.")
 
-        elif "time" in user_message:
+        m = re.search(r"my favourite color is (.+)|my favorite color is (.+)", text)
+        if m:
+            color = m.group(1) or m.group(2)
+            self.memory["color"] = color.title()
+            return self.reply("Favourite color saved.")
 
-            bot = f"Current Time : {get_current_time()}"
+        if "favorite color" in text or "favourite color" in text:
+            if "color" in self.memory:
+                return self.reply(f"Your favourite color is {self.memory['color']}.")
+            return self.reply("You haven't told me your favourite color yet.")
 
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # Date
-        # ===============================
-
-        elif "date" in user_message:
-
-            bot = f"Today's Date : {get_current_date()}"
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # Day
-        # ===============================
-
-        elif "day" in user_message:
-
-            bot = f"Today is {get_current_day()}"
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # Study Tips
-        # ===============================
-
-        elif user_message in [
-            "study",
-            "study tip",
-            "study tips",
-            "tips"
-        ]:
-
-            bot = study_tip()
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # Motivation
-        # ===============================
-
-        elif user_message in [
-            "motivate me",
-            "motivation",
-            "motivate",
-            "inspire me"
-        ]:
-
-            bot = motivation()
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # Python
-        # ===============================
-
-        elif user_message in [
-            "python",
-            "python fact",
-            "python facts"
-        ]:
-
-            bot = python_fact()
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # Java
-        # ===============================
-
-        elif user_message in [
-            "java",
-            "java tips",
-            "java guide"
-        ]:
-
-            bot = java_tip()
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # SQL
-        # ===============================
-
-        elif user_message in [
-            "sql",
-            "sql tips",
-            "database"
-        ]:
-
-            bot = sql_tip()
-
-            save_chat("StudyMate", bot)
-
-            return bot
-                # ===============================
         # Calculator
-        # ===============================
+        if text.startswith("calc"):
+            exp = user[4:].strip()
+            return self.reply(f"Answer = {calculate(exp)}")
 
-        elif user_message.startswith("calc"):
+        if re.fullmatch(r"[0-9+\-*/(). ]+", text):
+            return self.reply(f"Answer = {calculate(text)}")
 
+        # CGPA
+        if text.startswith("cgpa"):
             try:
-
-                expression = message[4:].strip()
-
-                result = calculate(expression)
-
-                bot = f"Answer = {result}"
-
+                p = text.split()[1]
+                return self.reply(f"Estimated CGPA : {percentage_to_cgpa(p)}")
             except:
+                return self.reply("Example : cgpa 85")
 
-                bot = "Example : calc 25+35"
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # Direct Mathematical Expression
-        # Example : 10+20*3
-        # ===============================
-
-        elif re.fullmatch(r"[0-9+\-*/(). ]+", user_message):
-
-            result = calculate(user_message)
-
-            bot = f"Answer = {result}"
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # Percentage To CGPA
-        # Example : cgpa 85
-        # ===============================
-
-        elif user_message.startswith("cgpa"):
-
+        if text.startswith("percentage"):
             try:
-
-                percentage = user_message.split()[1]
-
-                result = percentage_to_cgpa(percentage)
-
-                if result is None:
-
-                    bot = "Invalid Percentage."
-
-                else:
-
-                    bot = f"Estimated CGPA : {result}"
-
+                c = text.split()[1]
+                return self.reply(f"Percentage : {cgpa_to_percentage(c)}%")
             except:
+                return self.reply("Example : percentage 8.4")
 
-                bot = "Example : cgpa 85"
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # CGPA To Percentage
-        # Example : percentage 8.2
-        # ===============================
-
-        elif user_message.startswith("percentage"):
-
-            try:
-
-                cgpa = user_message.split()[1]
-
-                result = cgpa_to_percentage(cgpa)
-
-                if result is None:
-
-                    bot = "Invalid CGPA."
-
-                else:
-
-                    bot = f"Percentage : {result}%"
-
-            except:
-
-                bot = "Example : percentage 8.4"
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # About Project
-        # ===============================
-
-        elif user_message == "about":
-
-            bot = (
-                "StudyMate is a Rule-Based Student Assistant.\n\n"
-                "Features:\n"
-                "- Study Tips\n"
-                "- Motivation\n"
-                "- Python Facts\n"
-                "- Java Guide\n"
-                "- SQL Guide\n"
-                "- Calculator\n"
-                "- Date & Time\n"
-                "- CGPA Calculator\n"
-                "- Percentage Calculator"
+        # Stats
+        if text == "statistics":
+            s = get_chat_statistics()
+            return self.reply(
+                f"Total Messages : {s['messages']}\n"
+                f"Student Messages : {s['user_messages']}\n"
+                f"Bot Replies : {s['bot_messages']}"
             )
 
-            save_chat("StudyMate", bot)
+        # Help
+        if text == "help":
+            return self.reply(help_text())
 
-            return bot
-
-
-        # ===============================
-        # Help Command
-        # ===============================
-
-        elif user_message == "help":
-
-            bot = (
-                "\n========== AVAILABLE COMMANDS ==========\n\n"
-                "hello\n"
-                "hi\n"
-                "bye\n"
-                "date\n"
-                "time\n"
-                "day\n"
-                "study tip\n"
-                "motivation\n"
-                "python\n"
-                "java\n"
-                "sql\n"
-                "calc 20+30\n"
-                "25+30*4\n"
-                "cgpa 85\n"
-                "percentage 8.6\n"
-                "about\n"
-                "help\n"
+        # About
+        if text == "about":
+            return self.reply(
+                "StudyMate\n\n"
+                "Rule-Based Student Assistant\n"
+                "Built using Python & Tkinter\n"
+                "Developer : Saurav Shukla"
             )
 
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # Who are you
-        # ===============================
-
-        elif user_message in [
-
-            "who are you",
-
-            "your name",
-
-            "what is your name"
-
-        ]:
-
-            bot = (
-                "I am StudyMate 🤖\n"
-                "A Rule-Based Student Assistant developed in Python."
-            )
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
         # Creator
-        # ===============================
+        if text in ["creator","developer","who developed you","who made you"]:
+            return self.reply("I was developed by Saurav Shukla using Python.")
 
-        elif user_message in [
+        # Bad words
+        bad_words = ["idiot","stupid","fuck","shit","madarchod","bhosdike","bc","mc"]
+        if any(word in text for word in bad_words):
+            return self.reply(bad_language())
 
-            "creator",
-
-            "developer",
-
-            "who developed you"
-
-        ]:
-
-            bot = (
-                "I was developed by Saurav Shukla "
-                "using Python and Tkinter."
-            )
-
-            save_chat("StudyMate", bot)
-
-            return bot
-
-
-        # ===============================
-        # Unknown Command
-        # ===============================
-
-        else:
-
-            bot = unknown()
-
-            save_chat("StudyMate", bot)
-
-            return bot
+        return self.reply(unknown())

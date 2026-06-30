@@ -1,29 +1,51 @@
- StudyMate - Rule-Based Study Assistant
+# 🎓 StudyMate - Rule-Based Student Assistant
 
-📌 Project Overview
-StudyMate is a Rule-Based Study Assistant developed using Python and Tkinter. It is designed to answer
-basic academic questions related to computer science subjects using predefined rules and keyword
-matching.
-The application provides a simple graphical user interface (GUI) where users can interact with the chatbot
-by asking study-related questions. It is intended to help beginners quickly revise important concepts in
-programming and computer science.
+A modern **Rule-Based Chatbot** developed using **Python** and **Tkinter** as part of my **IBM AI Internship Project**.
 
-🚀 Features
+StudyMate helps students by providing study tips, programming guidance, motivational quotes, academic utilities, and basic calculations through a simple desktop chatbot interface.
 
-User-friendly graphical interface using Tkinter
-Rule-based chatbot implementation
-Answers frequently asked study-related questions
-Supports greetings and basic conversation
-Handles unknown questions with fallback responses
-Clear Chat functionality
-Responsive chat interface with auto-scrolling
-🛠️ Technologies Used
+---
 
+## 📌 Features
 
-Python 3.x
-Tkinter
-Object-Oriented Programming (OOP)
-📂 Project Structure
+- 💬 Rule-Based Chatbot
+- 📚 Study Tips
+- 💡 Motivational Quotes
+- 🐍 Python Facts
+- ☕ Java Tips
+- 🗄 SQL Tips
+- 🧮 Built-in Calculator
+- 📅 Current Date
+- 🕒 Current Time
+- 📆 Current Day
+- 🎯 Percentage → CGPA Converter
+- 📈 CGPA → Percentage Converter
+- 📜 Chat History Saving
+- 📤 Export Chat History
+- 📊 Chat Statistics
+- 🎨 Modern Light Theme
+- ⌨ Keyboard Shortcuts
+- 📌 Status Bar
+- ℹ About Window
+
+---
+
+# 🛠 Technologies Used
+
+- Python 3
+- Tkinter
+- Object Oriented Programming (OOP)
+- Rule-Based Decision Making
+- File Handling
+- Random Module
+- Datetime Module
+- Regular Expressions (Regex)
+
+---
+
+# 📂 Project Structure
+
+```
 StudyMate/
 │
 ├── main.py
@@ -31,80 +53,128 @@ StudyMate/
 ├── chatbot.py
 ├── responses.py
 ├── utils.py
+├── requirements.txt
 ├── README.md
-1
-▶️ How to Run
-1. 
-2. 
-3. 
-4. 
-Install Python 3.x.
-Download or clone the project.
-Open the project folder in Visual Studio Code.
-Run the following command:
+├── chat_history.txt
+└── .gitignore
+```
+
+---
+
+# 🚀 How to Run
+
+## Clone Repository
+
+```bash
+git clone https://github.com/ itzSaurav209/IBM-Rule-Based-chatbot
+
+```
+
+---
+
+## Go to Project Folder
+
+```bash
+cd itzSaurav209/IBM-Rule-Based-chatbot
+
+```
+
+---
+
+## Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Run Project
+
+```bash
 python main.py
-The StudyMate GUI window will open.
+```
 
+---
 
-💬 Sample Questions
-Try asking questions like:
-• 
-• 
-• 
-• 
-• 
-• 
-• 
-• 
-What is Python?
-Explain Object Oriented Programming.
-What is SQL?
-Difference between List and Tuple.
-What is Machine Learning?
-What is Data Science?
-Hello
-Bye
+# 💻 Available Commands
 
+| Command | Description |
+|----------|-------------|
+| hello | Greeting |
+| help | Show Commands |
+| about | About Project |
+| date | Current Date |
+| time | Current Time |
+| day | Current Day |
+| study tip | Study Tips |
+| motivate me | Motivation |
+| python | Python Facts |
+| java | Java Tips |
+| sql | SQL Tips |
+| calc 25+30 | Calculator |
+| 25+30*5 | Direct Calculation |
+| cgpa 85 | Percentage to CGPA |
+| percentage 8.5 | CGPA to Percentage |
+| creator | Developer Info |
+| bye | Exit Conversation |
 
-🎯 Learning Objectives
-This project demonstrates:
-• 
-• 
-• 
-• 
-• 
-• 
-Rule-Based Chatbot Design
-Python Programming
-GUI Development with Tkinter
-Modular Programming
-Object-Oriented Programming
-Event-Driven Programming
+---
 
+# 🖥 GUI Preview
 
-🔮 Future Enhancements
-• 
-• 
-• 
-• 
-AI-powered responses using Large Language Models (LLMs)
-Voice input and speech output
-Student login system
-Quiz mode
-2
-• 
-• 
-• 
-• 
-Subject-wise learning modules
-Database integration
-Performance tracking
-Dark mode interface
+The application includes:
 
-👨‍💻 Author
-Saurav Shukla
-B.Tech (Computer Science & Engineering)
+- Modern Light Theme
+- Chat Window
+- Send Button
+- Clear Chat
+- Export Chat
+- Statistics
+- About Window
+- Status Bar
+- Auto Scroll
+- Typing Animation
 
-📄 License
-This project is developed for educational and learning purposes.
-3
+---
+
+# 📚 Concepts Used
+
+- Python Programming
+- Tkinter GUI
+- Rule-Based AI
+- Conditional Statements
+- Functions
+- Classes & Objects
+- File Handling
+- Exception Handling
+- Regular Expressions
+- Event Driven Programming
+
+---
+
+# 🎯 Future Improvements
+
+- Voice Assistant
+- Speech-to-Text
+- Dark Mode
+- User Login
+- SQLite Database
+- AI Integration
+- Multi-language Support
+
+---
+
+# 👨‍💻 Developer
+
+**Saurav Shukla**
+
+B.Tech CSE Student
+
+IBM AI Internship Project
+
+---
+
+# ⭐ If you like this project
+
+Please consider giving this repository a **Star ⭐**.
